@@ -762,7 +762,8 @@ class Enhancer:
                 "unique_id": "UNIQUE_ID",
             },
             "optional": {  
-                "prompt": ("STRING",{"multiline": True, "default": ""}),          
+                "extra_instructions": ("STRING",{"multiline": True, "default": ""}), 
+                "prompt": ("STRING",{"multiline": True, "default": ""}),
                 "image" : ("IMAGE", {"default": None})
             }
         } 
@@ -777,7 +778,7 @@ class Enhancer:
     CATEGORY = "Plush/Prompt"
  
 
-    def gogo(self, GPTmodel, creative_latitude, tokens, style, artist, prompt_style, max_elements, style_info, prompt="", image=None, unique_id=None):
+    def gogo(self, GPTmodel, creative_latitude, tokens, style, artist, prompt_style, max_elements, style_info, extra_instructions="", prompt="", image=None, unique_id=None):
 
         if unique_id:
             self.trbl.reset('Style Prompt, Node #'+unique_id)
@@ -815,7 +816,8 @@ class Enhancer:
         elif prompt:
             mode = InputMode.PROMPT_ONLY
 
-        instruction = self.build_instruction(mode, style, prompt_style, max_elements, artist)  
+        instruction = self.build_instruction(mode, style, prompt_style, max_elements, artist)
+        instruction = instruction + ". " + extra_instructions
 
         if style_info:
             self.trbl.set_process_header("Art Style Info:")
